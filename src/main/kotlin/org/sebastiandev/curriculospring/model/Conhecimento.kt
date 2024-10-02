@@ -1,5 +1,6 @@
 package org.sebastiandev.curriculospring.model
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 
 @Entity
@@ -12,9 +13,10 @@ data class Conhecimento(
     val nome: String,
     val descricao: String,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pessoa_id")
-    val pessoa: Pessoa
+    @JsonBackReference
+    var pessoa: Pessoa
 ) {
     constructor() : this(0, "", "", Pessoa()) {
 

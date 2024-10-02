@@ -1,5 +1,6 @@
 package org.sebastiandev.curriculospring.model
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
 
 @Entity
@@ -9,25 +10,31 @@ data class Pessoa(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
 
-    @OneToOne(cascade = [CascadeType.ALL])
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "informacoes_pessoais_id", referencedColumnName = "id")
-    val informacoesPessoais: InformacoesPessoais = InformacoesPessoais(),
+    val informacoesPessoais: InformacoesPessoais,
 
-    @OneToOne(cascade = [CascadeType.ALL])
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "descricao_id", referencedColumnName = "id")
-    val descricao: Descricao = Descricao(),
+    val descricao: Descricao,
 
     @OneToMany(mappedBy = "pessoa", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val conhecimentos: List<Conhecimento> = emptyList(),
+    @JsonManagedReference
+    val conhecimentos: MutableList<Conhecimento> = mutableListOf(),
 
     @OneToMany(mappedBy = "pessoa", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val educacoes: List<Educacao> = emptyList(),
+    @JsonManagedReference
+    val educacoes: MutableList<Educacao> = mutableListOf(),
 
     @OneToMany(mappedBy = "pessoa", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val experiencias: List<Experiencia> = emptyList(),
+    @JsonManagedReference
+    val experiencias: MutableList<Experiencia> = mutableListOf(),
 
     @OneToMany(mappedBy = "pessoa", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val certificacoes: List<Certificacao> = emptyList()
+    @JsonManagedReference
+    val certificacoes: MutableList<Certificacao> = mutableListOf()
 ) {
-    constructor() : this(0, InformacoesPessoais(), Descricao(), emptyList(), emptyList(), emptyList(), emptyList())
+    constructor() : this(0, InformacoesPessoais(), Descricao(), mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf()) {
+
+    }
 }

@@ -1,5 +1,6 @@
 package org.sebastiandev.curriculospring.model
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 import java.time.LocalDate
 
@@ -16,7 +17,8 @@ data class Experiencia(
     val fim: LocalDate?,
     val descricao: String,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "pessoa_id")
     val pessoa: Pessoa
 ) {
