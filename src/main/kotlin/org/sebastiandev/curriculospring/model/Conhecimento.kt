@@ -16,7 +16,7 @@ data class Conhecimento(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pessoa_id")
     @JsonBackReference
-    var pessoa: Pessoa
+    var pessoa: Pessoa? = null
 ) {
     constructor() : this(0, "", "", Pessoa()) {
 

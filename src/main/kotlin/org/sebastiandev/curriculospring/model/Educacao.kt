@@ -21,7 +21,7 @@ data class Educacao(
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @JoinColumn(name = "pessoa_id")
-    val pessoa: Pessoa
+    var pessoa: Pessoa? = null
 ) {
     constructor() : this(0, "", "", LocalDate.now(), null, "", "", Pessoa()) {
 
